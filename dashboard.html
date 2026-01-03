@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solution X | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        header img {
+            height: 45px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .subjects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="logo.png" alt="Solution X Logo">
+        <a href="admin-login.html">Admin</a>
+    </header>
+
+    <div class="container">
+        <h1>Welcome to Solution X</h1>
+        <p>Select a subject to continue learning.</p>
+
+        <div class="subjects">
+            <div class="card" onclick="window.location.href='math.html'">
+    		<h3>Mathematics</h3>
+    		<p>Algebra, Calculus, Geometry & more</p>
+	    </div>
+
+            <div class="card" onclick="window.location.href='science.html'">
+    		<h3>Physical Sciences</h3>
+    		<p>Physics and Chemistry fundamentals</p>
+	    </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Solution X. All rights reserved.
+    </footer>
+
+</body>
+</html>
