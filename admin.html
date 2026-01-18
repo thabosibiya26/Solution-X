@@ -6,10 +6,14 @@
     }
 </script>
 <head>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <meta charset="UTF-8">
     <title>Solution X | Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
 
@@ -124,6 +128,24 @@
             }
         }
     </style>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDKlEPf6VH97L4GgDMSzbfCQegLHvLZ2RM",
+  authDomain: "solution-x-ca3b9.firebaseapp.com",
+  projectId: "solution-x-ca3b9",
+  storageBucket: "solution-x-ca3b9.firebasestorage.app",
+  messagingSenderId: "265989424146",
+  appId: "1:265989424146:web:b3224d861e9a99e2cd04cb",
+  measurementId: "G-FMMX38YG57"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+</script>
+
 </head>
 
 <script>
@@ -137,33 +159,33 @@
 function addLesson() {
     const title = document.getElementById("lessonTitle").value;
     const subject = document.getElementById("lessonSubject").value;
-    const fileInput = document.getElementById("lessonFile");
+    const file = document.getElementById("lessonFile").files[0];
 
-    if (!title || fileInput.files.length === 0) {
-        alert("Please enter lesson title and select a PDF.");
+    if (!title || !file) {
+        alert("Please enter title and select PDF");
         return;
     }
 
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+    const storageRef = storage.ref(`lessons/${Date.now()}_${file.name}`);
 
-    reader.onload = function () {
-        const lessons = JSON.parse(localStorage.getItem("lessons")) || [];
-
-        lessons.push({
-            title: title,
-            subject: subject,
-            file: reader.result
+    storageRef.put(file)
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+            return db.collection("lessons").add({
+                title: title,
+                subject: subject,
+                pdfUrl: url,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        })
+        .then(() => {
+            alert("Lesson uploaded successfully!");
+            document.getElementById("lessonTitle").value = "";
+            document.getElementById("lessonFile").value = "";
+        })
+        .catch(error => {
+            alert(error.message);
         });
-
-        localStorage.setItem("lessons", JSON.stringify(lessons));
-        alert("Lesson added successfully!");
-
-        document.getElementById("lessonTitle").value = "";
-        fileInput.value = "";
-    };
-
-    reader.readAsDataURL(file);
 }
 </script>
 

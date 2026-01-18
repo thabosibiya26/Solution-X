@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <meta charset="UTF-8">
     <title>Solution X | Physical Sciences</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,6 +41,24 @@
     	      background-color: #0056b3;
 	}
     </style>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDKlEPf6VH97L4GgDMSzbfCQegLHvLZ2RM",
+  authDomain: "solution-x-ca3b9.firebaseapp.com",
+  projectId: "solution-x-ca3b9",
+  storageBucket: "solution-x-ca3b9.firebasestorage.app",
+  messagingSenderId: "265989424146",
+  appId: "1:265989424146:web:b3224d861e9a99e2cd04cb",
+  measurementId: "G-FMMX38YG57"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+</script>
+
 </head>
 
 <body>
@@ -52,22 +75,26 @@
 
 
         <script>
-	const lessons = JSON.parse(localStorage.getItem("lessons")) || [];
-	const container = document.getElementById("scienceLessons");
+	db.collection("lessons")
+  	  .where("subject", "==", "math")
+  	  .orderBy("createdAt", "desc")
+  	  .onSnapshot(snapshot => {
+      	      const container = document.getElementById("mathLessons");
+      	      container.innerHTML = "";
 
-	lessons
-    	    .filter(l => l.subject === "science")
-    	    .forEach(l => {
-        	const card = document.createElement("div");
-        	card.className = "card";
+      	      snapshot.forEach(doc => {
+          	  const lesson = doc.data();
 
-        	card.innerHTML = `
-            	    <h3>${l.title}</h3>
-            	    <a href="${l.file}" target="_blank">View PDF</a>
-        `	;
+          	  const card = document.createElement("div");
+          	  card.className = "card";
+          	  card.innerHTML = `
+              	      <h3>${lesson.title}</h3>
+              	      <a href="${lesson.pdfUrl}" target="_blank">View PDF</a>
+          `	   ;
 
-        	container.appendChild(card);
-    	    });
+          	   container.appendChild(card);
+      	      });
+  	  });
 	</script>
 
             <div class="card">
