@@ -1,127 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-    <meta charset="UTF-8">
-    <title>Solution X | Admin Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solution X | Admin Login</title>
 
-        body {
-            height: 100vh;
-            background-color: #f4f6f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-        .box {
-            background: white;
-            padding: 40px;
-            width: 100%;
-            max-width: 380px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f6f9;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
 
-        img {
-            display: block;
-            margin: 0 auto 20px;
-            width: 160px;
-        }
+    .login-box{
+      background:white;
+      padding:40px;
+      border-radius:10px;
+      width:350px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-        }
+    h2{
+      text-align:center;
+      margin-bottom:20px;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
+    input{
+      width:100%;
+      padding:12px;
+      margin-bottom:15px;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    button{
+      width:100%;
+      padding:12px;
+      background:#007BFF;
+      color:white;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .error {
-            color: red;
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-            text-align: center;
-        }
-    </style>
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDKlEPf6VH97L4GgDMSzbfCQegLHvLZ2RM",
-  authDomain: "solution-x-ca3b9.firebaseapp.com",
-  projectId: "solution-x-ca3b9",
-  storageBucket: "solution-x-ca3b9.firebasestorage.app",
-  messagingSenderId: "265989424146",
-  appId: "1:265989424146:web:b3224d861e9a99e2cd04cb",
-  measurementId: "G-FMMX38YG57"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-</script>
-
+    button:hover{
+      background:#0056b3;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="box">
-    <img src="logo.png" alt="Solution X Logo">
-    <h2>Admin Login</h2>
+<div class="login-box">
+  <h2>Admin Login</h2>
 
-    <input type="text" id="username" placeholder="Admin username">
-    <input type="password" id="password" placeholder="Admin password">
+  <input type="email" id="email" placeholder="Admin Email">
+  <input type="password" id="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
-
-    <div class="error" id="error">Invalid admin credentials</div>
+  <button onclick="login()">Login</button>
 </div>
 
 <script>
-function adminLogin() {
+
+  // PASTE YOUR FIREBASE CONFIG BELOW
+  const firebaseConfig = {
+    apiKey: "AIzaSyDKlEPf6VH97L4GgDMSzbfCQegLHvLZ2RM",
+    authDomain: "solution-x-ca3b9.firebaseapp.com",
+    projectId: "solution-x-ca3b9",
+    storageBucket: "solution-x-ca3b9.firebasestorage.app",
+    messagingSenderId: "265989424146",
+    appId: "1:265989424146:web:b3224d861e9a99e2cd04cb"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Login Function
+  function login(){
+
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-            window.location.href = "admin.html";
-        })
-        .catch(error => {
-            alert(error.message);
-        });
-}
-</script>
+    firebase.auth()
+      .signInWithEmailAndPassword(email,password)
+      .then(() => {
 
+        alert("Login successful!");
+
+        window.location.href = "admin.html";
+
+      })
+      .catch((error) => {
+
+        alert(error.message);
+
+      });
+  }
+
+</script>
 
 </body>
 </html>
