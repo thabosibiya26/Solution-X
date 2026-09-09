@@ -76,10 +76,10 @@ const storage = firebase.storage();
 
         <script>
 	db.collection("lessons")
-  	  .where("subject", "==", "math")
+  	  .where("subject", "==", "Physical Sciences")
   	  .orderBy("createdAt", "desc")
   	  .onSnapshot(snapshot => {
-      	      const container = document.getElementById("mathLessons");
+      	      const container = document.getElementById("scienceLessons");
       	      container.innerHTML = "";
 
       	      snapshot.forEach(doc => {
