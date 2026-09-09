@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-    if (localStorage.getItem("adminLoggedIn") !== "true") {
-        window.location.href = "admin-login.html";
-    }
+    // Firebase is the real authentication check.
+    // localStorage is kept only as a legacy convenience flag.
 </script>
 <head>
     <!-- Firebase SDKs -->
@@ -144,14 +143,23 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+        localStorage.removeItem("adminLoggedIn");
+        window.location.href = "admin-login.html";
+    }
+});
 </script>
 
 </head>
 
 <script>
     function logout() {
-        localStorage.removeItem("adminLoggedIn");
-        window.location.href = "admin-login.html";
+        firebase.auth().signOut().then(() => {
+            localStorage.removeItem("adminLoggedIn");
+            window.location.href = "admin-login.html";
+        });
     }
 </script>
 
@@ -221,7 +229,7 @@ function addLesson() {
             <button onclick="addLesson()">Add Lesson</button>
 
             <p style="margin-top:10px; font-size:13px; color:#777;">
-                PDFs are stored locally in your browser.
+                PDFs are securely stored in Firebase Storage.
             </p>
         </div>
 
