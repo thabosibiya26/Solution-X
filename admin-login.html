@@ -92,6 +92,7 @@
       .signInWithEmailAndPassword(email,password)
       .then(() => {
 
+        localStorage.setItem("adminLoggedIn", "true");
         alert("Login successful!");
 
         window.location.href = "admin.html";
