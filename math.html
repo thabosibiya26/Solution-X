@@ -74,7 +74,7 @@ const storage = firebase.storage();
         <div class="lessons" id="mathLessons"></div>
         <script>
 	db.collection("lessons")
-  	  .where("subject", "==", "math")
+  	  .where("subject", "==", "Mathematics")
   	  .orderBy("createdAt", "desc")
   	  .onSnapshot(snapshot => {
       	      const container = document.getElementById("mathLessons");
